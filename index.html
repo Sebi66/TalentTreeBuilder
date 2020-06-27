@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="brython.js"></script>
+    <script type="text/javascript" src="brython_stdlib.js"></script>
+    <style type="text/css">
+        html, body, svg {
+            display:block;
+            position:absolute;
+            width: 100%;
+            min-height: 100%;
+            height: 500px;
+            margin: 0px;
+            padding: 0px;
+        }
+
+    </style>
+</head>
+
+<body oncontextmenu="return false;" onload="brython({indexedDB:false})" >
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                id="play_area">
+                <g id="panel"></g>
+    </svg>
+    <script type="text/python" src="main.py"></script>
+</body>
+
+</html>
