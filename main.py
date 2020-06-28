@@ -1,19 +1,23 @@
 from browser import document, svg, timer, html
 from gui.node import Node
+from gui import menu
 
 panel = document['panel']
 tooltip = document['tooltip']
 tooltip.parent.style['display'] = 'none'
 
-def contextmenu_click(event):
+def panel_mouse_up(event):
     button = event.which
-    print('panel')
     if button is 1:
         if Node.active_moving is not None:
             Node.active_moving.mouse_up(event)
     elif button is 3:
-       cNode = Node(panel,'Unnamed')
-       cNode.position = event.x,event.y
+        menu.create(event.x,event.y)
+
+def panel_mouse_down(event):
+    button = event.which
+    if button is 1:
+        menu.remove()
 
 def panel_move(event):
     if Node.active_moving is not None:
@@ -28,7 +32,8 @@ def panel_move(event):
     else:
         tooltip.parent.style['display'] = 'none'
 
-panel.parent.bind("mouseup", contextmenu_click)
+panel.parent.bind("mousedown", panel_mouse_down)
+panel.parent.bind("mouseup", panel_mouse_up)
 panel.parent.bind("mousemove", panel_move)
 
 node = Node(panel,'Skill1',active=False,cost=2)

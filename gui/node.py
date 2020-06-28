@@ -1,4 +1,5 @@
 from browser import svg
+from gui import menu
 
 LEFT = 1
 RIGHT = 3
@@ -75,8 +76,7 @@ class Node:
             self.moving = True
             Node.active_moving = self
             self.anchor = event.x - self.x, event.y - self.y
-        elif button is RIGHT:
-            print('contextmenu down')
+            menu.remove()
         event.stopPropagation()
 
     def mouse_up(self, event):
@@ -85,7 +85,7 @@ class Node:
             self.moving = False
             Node.active_moving = None
         elif button is RIGHT:
-            print('contextmenu up')
+            menu.create(event.x,event.y,self)
         event.stopPropagation()
 
     def mouse_moving(self, event):
