@@ -1,33 +1,101 @@
 from browser import svg
 
+LEFT = 1
+RIGHT = 3
+
 class Node:
-	side = 80
+    width,height = 100,50
+    padding = 5
+    active_moving = None
+    active_hover = None
 
-	def __init__(self, pos):
-		self.position = pos
-		self.rect = svg.rect(x=self.position[0], y=self.position[1],
-			width=Node.side, height=Node.side,
-			stroke_width="5", stroke="black", fill='white')
-		self.rect.bind("mousedown", self.mouse_down)
-		self.rect.bind("mouseup", self.mouse_up)
-		self.rect.bind("mousemove", self.mouse_moving)
-		self.rect.bind("contextmenu", self.contextmenu_click)
-		self.moving = False
+    def __init__(self, panel, name, active=True, cost=0):
+        self.name = name
+        self.active = active
+        self.cost = cost
 
+        self.description = 'Edit description'
 
-	def mouse_down(self, event):
-		self.moving = True
+        self.x,self.y = 0,0
+        self.anchor = 0,0
+        self.svg_rect = svg.rect(x=0, y=0,
+            width=Node.width, height=Node.height,
+            stroke_width=2, stroke="black", fill='white')
+        self.svg_name = svg.text(self.name,
+            x=0,y=0,
+            font_size=20,text_anchor='middle',dominant_baseline="hanging")
+        self.svg_active = svg.text(['Passive','Active'][self.active],
+            x=0,y=0,
+            font_size=15,text_anchor='start',dominant_baseline="baseline")
+        self.svg_cost = svg.text(str(self.cost),
+            x=0,y=0,
+            font_size=15,text_anchor='end',dominant_baseline="baseline")
 
-	def mouse_up(self, event):
-		self.moving = False
+        self.svg_rect.bind("mousedown", self.mouse_down)
+        self.svg_rect.bind("mouseup", self.mouse_up)
+        self.svg_rect.bind("mousemove", self.mouse_moving)
+        self.svg_rect.bind("mouseout", self.mouse_out)
+        self.svg_rect.bind("mouseover",self.mouse_over)
+        self.moving = False
 
-	def mouse_moving(self, event):
-		if self.moving:
-			self.rect['x'] = event.x - Node.side/2
-			self.rect['y'] = event.y - Node.side/2
+        panel <= self.svg_rect
+        panel <= self.svg_name
+        panel <= self.svg_active
+        panel <= self.svg_cost
 
-	def contextmenu_click(self, event):
-		print('in node')
-		event.stopPropagation()
-		event.preventDefault()
-		
+        self.update()
+
+    @property
+    def position(self):
+        return self.x,self.y
+
+    @position.setter
+    def position(self, value):
+        self.x,self.y = value
+        self.update()
+
+    def update(self):
+        x,y = self.x,self.y
+        self.svg_rect['x'] = x
+        self.svg_rect['y'] = y
+        self.svg_name['x'] = x + self.width/2
+        self.svg_name['y'] = y + Node.padding
+        self.svg_active['x'] = x + Node.padding
+        self.svg_active['y'] = y + self.height - Node.padding
+        self.svg_cost['x'] = x + self.width - Node.padding
+        self.svg_cost['y'] = y + self.height - Node.padding
+
+        self.svg_name.text = self.name
+        self.svg_active.text = ['Passive','Active'][self.active]
+        self.svg_cost.text = str(self.cost)
+
+    def mouse_down(self, event):
+        button = event.which
+        if button is LEFT:
+            self.moving = True
+            Node.active_moving = self
+            self.anchor = event.x - self.x, event.y - self.y
+        elif button is RIGHT:
+            print('contextmenu down')
+        event.stopPropagation()
+
+    def mouse_up(self, event):
+        button = event.which
+        if button is LEFT:
+            self.moving = False
+            Node.active_moving = None
+        elif button is RIGHT:
+            print('contextmenu up')
+        event.stopPropagation()
+
+    def mouse_moving(self, event):
+        if self.moving:
+            self.position = event.x - self.anchor[0], event.y - self.anchor[1]
+
+    def mouse_out(self, event):
+        self.mouse_moving(event)
+        Node.active_hover = None
+
+    def mouse_over(self, event):
+        Node.active_hover = self
+        event.stopPropagation()

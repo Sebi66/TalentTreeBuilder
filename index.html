@@ -15,14 +15,41 @@
             margin: 0px;
             padding: 0px;
         }
+        text {
+            pointer-events:none;
+            user-select: none;
+        }
+
+        p {
+            display:table-cell;
+            padding:10px;
+            border:1px solid red;
+            background-color:gold;
+            font-size:20px;
+            white-space: pre;
+            word-wrap: normal;
+            overflow: visible;
+            overflow-y: visible;
+            overflow-x: visible;
+        }
+
+        foreignObject {
+            display: none;
+        }
 
     </style>
 </head>
 
 <body oncontextmenu="return false;" onload="brython({indexedDB:false})" >
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                id="play_area">
-                <g id="panel"></g>
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         id="play_area">
+
+        <g id="panel"></g>
+        <foreignObject width="10000" height="10000">
+            <p id="tooltip" contentEditable="true" xmlns="http://www.w3.org/1999/xhtml"></p>
+        </foreignObject>
+
     </svg>
     <script type="text/python" src="main.py"></script>
 </body>
