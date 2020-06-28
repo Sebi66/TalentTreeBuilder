@@ -36,12 +36,12 @@ panel.parent.bind("mousedown", panel_mouse_down)
 panel.parent.bind("mouseup", panel_mouse_up)
 panel.parent.bind("mousemove", panel_move)
 
-node = Node(panel,'Skill1',active=False,cost=2)
-node2 = Node(panel,'Skill2',cost=3)
-node.position = 300,100
-node.description = 'Scroll of Wisdom'
-node2.position = 400,200
-node2.description = 'Mirror of Kalandra'
+#node = Node(panel,'Skill1',active=False,cost=2)
+#node2 = Node(panel,'Skill2',cost=3)
+#node.position = 300,100
+#node.description = 'Scroll of Wisdom'
+#node2.position = 400,200
+#node2.description = 'Mirror of Kalandra'
 
 
 

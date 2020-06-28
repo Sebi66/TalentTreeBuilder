@@ -20,7 +20,7 @@
             user-select: none;
         }
 
-        p {
+        p#tooltip {
             display:table-cell;
             padding:10px;
             border:1px solid red;
@@ -37,19 +37,58 @@
             display: none;
         }
 
+        .contextMenu {
+            list-style-type:none;
+            padding:0px;
+            margin:0px;
+            padding-top:10px;
+            padding-bottom:10px;
+            background-color:black;
+            -webkit-border-radius: 10px 10px 10px 10px;
+            border-radius: 10px 10px 10px 10px;
+        }
+        .contextMenu li{
+            padding:7px;
+            padding-left:12px;
+        }
+        .contextMenu li:hover{
+            background-color:gray;
+        }
+        .contextMenu p {
+            color:white;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 0px;
+            padding: 0px;
+            -webkit-user-select: none; /* Safari */       
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+        path {
+          fill: none;
+          stroke: black;
+          stroke-width: 2;
+        }
+
     </style>
 </head>
 
 <body oncontextmenu="return false;" onload="brython({indexedDB:false})" >
     <svg xmlns="http://www.w3.org/2000/svg" 
          xmlns:xlink="http://www.w3.org/1999/xlink"
+         id="connection_area">
+        <g id="line_panel"></g>             
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" 
+         xmlns:xlink="http://www.w3.org/1999/xlink"
          id="play_area">
-
         <g id="panel"></g>
+
         <foreignObject width="10000" height="10000">
             <p id="tooltip" contentEditable="true" xmlns="http://www.w3.org/1999/xhtml"></p>
         </foreignObject>
-        <foreignObject id="menu" width="100" height="100">
+        <foreignObject id="menu" width="150" height="150" overflow='visible'>
         </foreignObject>
 
     </svg>

@@ -1,8 +1,10 @@
-from browser import svg
+from browser import document, svg
 from gui import menu
 
 LEFT = 1
 RIGHT = 3
+
+line_panel = document['line_panel']
 
 class Node:
     width,height = 100,50
@@ -14,8 +16,9 @@ class Node:
         self.name = name
         self.active = active
         self.cost = cost
-
         self.description = 'Edit description'
+
+        self.children=[]
 
         self.x,self.y = 0,0
         self.anchor = 0,0
@@ -55,6 +58,16 @@ class Node:
         self.x,self.y = value
         self.update()
 
+    def addChild(self, child_node):
+        # d = "M 100 350 c 100 -200 200 500 300 0"
+        # line = svg.path(d=d)
+        # line_panel<=line
+        # print(child_node.name + "CHILDNAME")
+        self.children.append([child_node, line])
+
+    def removeChild(self, child_node):
+        self.children.remove(child_node)
+
     def update(self):
         x,y = self.x,self.y
         self.svg_rect['x'] = x
@@ -65,6 +78,14 @@ class Node:
         self.svg_active['y'] = y + self.height - Node.padding
         self.svg_cost['x'] = x + self.width - Node.padding
         self.svg_cost['y'] = y + self.height - Node.padding
+
+        # x1, y1 = map(int,self.position)
+        # for child,line in self.children:
+        #     x2, y2 = map(int,child.position)
+        #     mx1,my1 = int((x1+x2)/2),int(y1)
+        #     mx2,my2 = int((x1+x2)/2),int(y2)
+        #     d = f'M {x1} {y1} C {mx1} {my1} {mx2} {my2} {x2} {y2}'
+        #     line.attrs["d"] = d
 
         self.svg_name.text = self.name
         self.svg_active.text = ['Passive','Active'][self.active]
